@@ -1,3 +1,6 @@
 FactoryGirl.define do
-  # do the thing
+  factory :idea do
+    title "Title"
+    body "Body"
+  end
 end
