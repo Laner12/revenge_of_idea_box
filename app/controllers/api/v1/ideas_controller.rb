@@ -5,7 +5,11 @@ class Api::V1::IdeasController < ApplicationController
   end
 
   def create
-    render json: Idea.new(idea_params)
+    render json: Idea.create(idea_params)
+  end
+
+  def destroy
+    Idea.find(params["id"]).destroy
   end
 
   private
