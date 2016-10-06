@@ -31,8 +31,14 @@ $(document).ready(function(){
         data: ideaParams
       }).then(createIdeaHTML)
       .then(renderIdea)
+      .then(clearInputs)
       .fail(manageError)
     })
+  }
+
+  function clearInputs(){
+    $("#idea-title").val(""),
+    $("#idea-body").val("")
   }
 
   function deleteIdea(){
@@ -48,13 +54,14 @@ $(document).ready(function(){
   }
 
   function createIdeaHTML(idea){
-    return $("<div class='idea row well' data-up='up' data-down='down' data-id='"
+    return $("<div class='idea row well' data-up='up' data-down='down' data-all='"
+          + idea.title +" "+ idea.body +"' data-id='"
           + idea.id
           + "'><p>Created at: "
           + idea.created_at
-          + "</p><p>"
+          + "</p><p contenteditable='true'>"
           + idea.title
-          + "</p><p>"
+          + "</p><p contenteditable='true'>"
           + idea.body
           + "</p><p>"
           + idea.quality
