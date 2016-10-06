@@ -10,6 +10,7 @@ class Api::V1::IdeasController < ApplicationController
 
   def update
     idea = Idea.find(params["id"])
+    idea.update_attributes(idea_params) if params["title"] || params["body"]
     if params["type"] == "up"
       up_vote_incrementer(idea)
     else

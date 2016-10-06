@@ -4,6 +4,8 @@ $(document).ready(function(){
   deleteIdea();
   upVoteIdea();
   downVoteIdea();
+  editIdeaTitle();
+  editIdeaBody();
 })
 
   function fetchIdeas(){
@@ -59,9 +61,9 @@ $(document).ready(function(){
           + idea.id
           + "'><p>Created at: "
           + idea.created_at
-          + "</p><p contenteditable='true'>"
+          + "</p><p contenteditable='true' class='input-field-title'>"
           + idea.title
-          + "</p><p contenteditable='true'>"
+          + "</p><p contenteditable='true' class='input-field-body'>"
           + idea.body
           + "</p><p>"
           + idea.quality
@@ -88,7 +90,7 @@ $(document).ready(function(){
     $(".idea-list").on("click", ".thumbs-up", function(){
       var $ideaUpVote = $(this).closest(".idea")
       $.ajax({
-        url: "/api/v1/ideas/" + $ideaUpVote.data("up") + "/" + $ideaUpVote.data("id"),
+        url: "/api/v1/ideas/" + $ideaUpVote.data("id") + "/" + $ideaUpVote.data("up"),
         type: "put"
       }).then(fetchIdeas)
       .fail(manageError)
@@ -99,8 +101,38 @@ $(document).ready(function(){
     $(".idea-list").on("click", ".thumbs-down", function(){
       var $ideaDownVote = $(this).closest(".idea")
       $.ajax({
-        url: "/api/v1/ideas/" + $ideaDownVote.data("down") + "/" + $ideaDownVote.data("id"),
+        url: "/api/v1/ideas/" + $ideaDownVote.data("id") + "/" + $ideaDownVote.data("down"),
         type: "put"
+      }).then(fetchIdeas)
+      .fail(manageError)
+    })
+  }
+
+  function editIdeaTitle(){
+    $(".idea-list").on("blur", ".input-field-title", function(){
+      var $editIdeaTitle = $(this).closest(".idea")
+      var editTitleParams = {
+        title: $(this).text()
+      }
+      $.ajax({
+        url: "/api/v1/ideas/" + $editIdeaTitle.data("id"),
+        type: "put",
+        data: editTitleParams
+      }).then(fetchIdeas)
+      .fail(manageError)
+    })
+  }
+
+  function editIdeaBody(){
+    $(".idea-list").on("blur", ".input-field-body", function(){
+      var $editIdeaBody = $(this).closest(".idea")
+      var editBodyParams = {
+        body: $(this).text()
+      }
+      $.ajax({
+        url: "/api/v1/ideas/" + $editIdeaBody.data("id"),
+        type: "put",
+        data: editBodyParams
       }).then(fetchIdeas)
       .fail(manageError)
     })
