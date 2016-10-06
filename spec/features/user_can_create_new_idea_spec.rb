@@ -11,8 +11,8 @@ describe "Create idea", :type => :feature, :js => true do
     fill_in "idea-title", :with => "Light Bulb"
     fill_in "idea-body", :with => "This is gonna be big."
     click_button "Save"
-    
-    within('#idea-list') do
+
+    within('.idea-list') do
       expect(page).to have_content("Light Bulb")
       expect(page).to have_content("This is gonna be big.")
     end
