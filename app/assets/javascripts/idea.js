@@ -36,7 +36,7 @@ $(document).ready(function(){
   }
 
   function deleteIdea(){
-    $("#idea-list").on("click", "#delete-button", function(){
+    $(".idea-list").on("click", "#delete-button", function(){
       var $ideaId = $(this).closest(".idea")
       $.ajax({
         url: "/api/v1/ideas/" + $ideaId.data("id"),
@@ -48,7 +48,7 @@ $(document).ready(function(){
   }
 
   function createIdeaHTML(idea){
-    return $("<div class='idea row well' data-id='"
+    return $("<div class='idea row well' data-up='up' data-down='down' data-id='"
           + idea.id
           + "'><p>Created at: "
           + idea.created_at
@@ -60,8 +60,8 @@ $(document).ready(function(){
           + idea.quality
           + "</p>"
           + "<div class='quality-buttons'>"
-          + "<button id='thumbs-up' name='button-up' class='btn btn-primary'>Upvote</button>"
-          + "<button id='thumbs-down' name='button-down' class='btn btn-danger'>Downvote</button>"
+          + "<button name='button-up' class='thumbs-up btn btn-primary'>Upvote</button>"
+          + "<button name='button-down' class='thumbs-down btn btn-danger'>Downvote</button>"
           + "</div>"
           + "<div class='text-right'>"
           + "<button id='delete-button' name='button-delete' class='btn btn-secondary text-right' value='Delete'>Delete</button>"
@@ -70,11 +70,33 @@ $(document).ready(function(){
   }
 
   function renderIdeas(ideaInfo){
-    $("#idea-list").html(ideaInfo)
+    $(".idea-list").html(ideaInfo)
   }
 
   function renderIdea(ideaInfo){
-    $("#idea-list").prepend(ideaInfo)
+    $(".idea-list").prepend(ideaInfo)
+  }
+
+  function upVoteIdea(){
+    $(".idea-list").on("click", ".thumbs-up", function(){
+      var $ideaUpVote = $(this).closest(".idea")
+      $.ajax({
+        url: "/api/v1/ideas/" + $ideaUpVote.data("up") + "/" + $ideaUpVote.data("id"),
+        type: "put"
+      }).then(fetchIdeas)
+      .fail(manageError)
+    })
+  }
+
+  function downVoteIdea(){
+    $(".idea-list").on("click", ".thumbs-down", function(){
+      var $ideaDownVote = $(this).closest(".idea")
+      $.ajax({
+        url: "/api/v1/ideas/" + $ideaDownVote.data("down") + "/" + $ideaDownVote.data("id"),
+        type: "put"
+      }).then(fetchIdeas)
+      .fail(manageError)
+    })
   }
 
   function manageError(error){console.log(error)}
