@@ -6,7 +6,8 @@ Rails.application.routes.draw do
       get '/ideas', to: 'ideas#index'
       post '/ideas', to: 'ideas#create'
       delete '/ideas/:id', to: 'ideas#destroy'
-      put '/ideas/:type/:id', to: 'ideas#update'
+      put '/ideas/:id/:type', to: 'ideas#update'
+      put '/ideas/:id', to: 'ideas#update'
     end
   end
 end
